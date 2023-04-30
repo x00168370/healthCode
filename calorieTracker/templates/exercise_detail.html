@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Page</title>
+</head>
+<body>
+
+  <h1>Exercise Detail</h1>
+
+<ul>
+
+  <li>Name: {{exercise.activity}}</li>
+  <li>Duration: {{exercise.duration}}</li>
+  <li>Weight: {{exercise.weight}}</li>
+  <li>Date: {{exercise.date|date}}</li>
+
+
+</ul>
+
+
+
+{% if user == exercise.user %}
+<a href="{% url 'exercise_edit' exercise.id %}">Edit</a>
+<a href="{% url 'exercise_delete' exercise.id %}">Delete</a>
+{% endif %}
+
+  
+</body>
+</html>
+
+

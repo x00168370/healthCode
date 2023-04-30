@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Meals</title>
+</head>
+
+<body>
+
+  <nav class="navbar bg-light navbar-expand-sm">
+
+    <a href="{% url 'home' %}" class="navbar-brand">Health Code</a>
+
+    <ul class="navbar-nav">
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
+      </li>
+      {% if user.is_authenticated %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'community:community' %}">Create post</a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:exercise' %}">Exercise Log</a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:meal' %}">Meal Log</a>
+      </li>
+      {% else %}
+      <p class="login mt-2">You are currently not logged in</p>
+      <a href="{% url 'calorieTracker:signin' %}" class="login mt-2 ml-1"> Login</a>
+      <a href="{% url 'calorieTracker:signup' %}" class="login mt-2 ml-1">| or sign up now</a>
+      {% endif %}
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:muscle_search' %}">Exercise Search</a>
+      </li>
+
+    </ul>
+
+  </nav>
+
+
+  <div class="card mt-4 ">
+    <div class="card-header">
+      <h1 class="ml-5 text-center">
+        Search for the Nutritional Value</h1>
+    </div>
+
+    <div class="card-body ml-5 mt-3">
+
+
+      <div class=" ">
+
+        <form method="POST" enctype="multipart/form-data" action="">
+          {% csrf_token %}
+          <div class="input-group input-group-lg mb-5">
+            <input type="search" name="query" class="form-control inputstyle" placeholder="Search For Nutritional Value"
+              required>
+            <button class="btn whoop ml-1 btn-info" type="submit" id="button-addon2">Find calories</button>
+          </div>
+        </form>
+
+        {% if meal_api %}
+        {% if meal_api == "oops! There was an error" %}
+        <div class="alert alert-warning"> Oh no! something went wrong.Please try again in sometime. </div>
+        {%else%}
+
+        <h4>There are {{meal_api.0.calories}} Calories in {{meal_api.0.name | capfirst}} </h4>
+        <br>
+
+
+        {%endif%}
+        {%if meal_api.0.sodium_mg > 1000%}
+        <div class="alert alert-danger d-flex align-items-center mt-3" role="alert">
+          <div>
+            This food contains an high amount of sodium. High Sodium causes Sever dehydration and water
+            retention.
+          </div>
+        </div>
+
+
+        {%endif%}
+        {%if meal_api.0.sugar_g > 100%}
+        <div class="alert alert-danger d-flex align-items-center mt-3" role="alert">
+          <div>
+            This food contains an high amount of sugar. Sugar causes insulin spikes and is a no.1 cause for
+            Obesity.
+
+
+          </div>
+        </div>
+        {%endif%}
+        {%endif%}
+
+
+
+
+        <div class="">
+          <h2 class="mb-4">Nutritional Values: </h2><span></span>
+          <ul>
+            <li class="servingsize">Serving Size per 100/Grams <span class="float-end"></span></li>
+            <li>Carbohydrates: <span class="float-end">{{meal_api.0.carbohydrates_total_g}}</span></li>
+            <li>Cholesterol: <span class="float-end">{{meal_api.0.cholesterol_mg}}</span></li>
+            <li>Saturated fat: <span class="float-end">{{meal_api.0.fat_saturated_g}}</span></li>
+            <li>Total Fat: <span class="float-end">{{meal_api.0.fat_saturated_g}}</span></li>
+            <li>Fiber Content: <span class="float-end">{{meal_api.0.fat_total_g}}</span></li>
+            <li>Potassium <span class="float-end">{{meal_api.0.potassium_mg}}</span></li>
+            <li>Protein: <span class="float-end">{{meal_api.0.protein_g}}</span></li>
+            <li>Sodium:<span class="float-end">{{meal_api.0.sodium_mg}}</span></li>
+            <li>Sugar: <span class="float-end">{{meal_api.0.sugar_g}}</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+
+      <!-- Pagination -->
+      {% if is_paginated %}
+      <nav aria-label="Page navigation conatiner"></nav>
+      <ul class="pagination justify-content-center m-5">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+        {% endif %}
+      </ul>
+      </nav>
+      {% endif %}
+      <!-- Pagination -->
+
+
+      <!-- Footer-->
+      <div class="container-fluid mt-5">
+        <footer class="rounded bg-light">
+          <p class="text-center text-secondary py-2">&copy; Health Code 2023.</p>
+        </footer>
+      </div>
+      <!-- Footer-->
+    </div>
+
+</body>
+
+</html>

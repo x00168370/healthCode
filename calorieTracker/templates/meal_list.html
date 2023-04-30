@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Meals</title>
+</head>
+
+<body>
+
+  <nav class="navbar bg-light navbar-expand-sm">
+
+    <a href="{% url 'home' %}" class="navbar-brand">Health Code</a>
+
+    <ul class="navbar-nav">
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
+      </li>
+      {% if user.is_authenticated %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'community:community' %}">Create post</a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:exercise' %}">Exercise Log</a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:meal' %}">Meal Log</a>
+      </li>
+      {% else %}
+      <p class="login mt-2">You are currently not logged in</p>
+      <a href="{% url 'calorieTracker:signin' %}" class="login mt-2 ml-1"> Login</a>
+      <a href="{% url 'calorieTracker:signup' %}" class="login mt-2 ml-1">| or sign up now</a>
+      {% endif %}
+
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'calorieTracker:muscle_search' %}">Exercise Search</a>
+      </li>
+    </ul>
+  </nav>
+
+
+
+  <div class="card">
+
+    <div class="card-header">
+      <h1 class="text-center">Meals</h1>
+    </div>
+
+
+
+    
+
+    <div class="card">
+
+      <div class="card item-card card-block text-center">
+
+        <p>
+          {% if not has_entered_meal_today %}
+        <div class="alert alert-danger" role="alert">
+          You haven't logged a meal today yet. Please enter one now.
+        </div>
+        {% endif %}
+
+        <h5 class="card-title mt-3 mb-3 text-center">Total Calories Consumed Today: {{ daily_calories }} <br> </h5>
+        <h5 class="card-title mt-3 mb-3 text-center">Calories Consumed this Week: {{ weekly_calories }}</h5>
+        </p>
+
+      </div>
+
+      <div class="card item-card card-block">
+
+      </div>
+
+
+
+
+
+      <table id='foodtable' class='table table-hover'>
+        <thead>
+          <tr>
+            <th scope='col' class='col-ms-2'>Date</th>
+            <th scope='col' class='col-ms-2'>Category</th>
+            <th scope='col' class='col-ms-2'>Name</th>
+            <th scope='col' class='col-ms-2'>Fat(g) in 100g</th>
+            <th scope='col' class='col-ms-2'>Protein(g) in 100g</th>
+            <th scope='col' class='col-ms-2'>Carbs(g) in 100g</th>
+            <th scope='col' class='col-ms-2'>Quantity</th>
+            <th scope='col' class='col-ms-2'>Calories</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for meal in object_list %}
+
+          <tr>
+            <td class='col-ms-2'>{{ meal.date }}</td>
+            <td class='col-ms-2'>{{ meal.category }}</td>
+            <td class='col-ms-2'>{{ meal.name }}</td>
+            <td class='col-ms-2'>{{ meal.fat }}</td>
+            <td class='col-ms-2'>{{ meal.protein }}</td>
+            <td class='col-ms-2'>{{ meal.carbs }}</td>
+            <td class='col-ms-2'>{{ meal.quantity }}</td>
+            <td class='col-ms-2'>{{ meal.calories }}</td>
+
+
+            <td>
+              <a class='btn btn-success btn-sm' href="{% url 'calorieTracker:meal_edit' meal.pk %}">
+                Edit<i class='fas fa-trash-alt'></i>
+              </a>
+            </td>
+
+            <td>
+              <a class='btn btn-danger btn-sm' href="{% url 'calorieTracker:meal_delete' meal.pk %}">
+                Delete<i class='fas fa-trash-alt'></i>
+              </a>
+
+            </td>
+          </tr>
+          {% endfor %}
+
+          <br>
+        </tbody>
+      </table>
+
+      <br />
+
+
+    </div>
+
+    
+
+
+  </div>
+
+  </div>
+  <div class="container-fluid">
+    <footer class="rounded bg-light">
+      <p class="text-center text-secondary py-2">&copy; Health Code 2023.</p>
+    </footer>
+  </div>
+
+
+
+
+</body>
+
+</html>

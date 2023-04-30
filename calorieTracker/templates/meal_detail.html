@@ -1,0 +1,19 @@
+<h1>Meal Detail</h1>
+
+<ul>
+  <li>Category: {{meal.category}}</li>
+  <li>Name: {{meal.name}}</li>
+  <li>Date: {{meal.date|date}}</li>
+  <li>Fat: {{meal.fat}}</li>
+  <li>Protein: {{meal.protein}}</li>
+  <li>Carbohydrates: {{meal.carbs}}</li>
+  <li>Quantity: {{meal.quantity}}</li>
+  <li>Calories: {{meal.calories}}</li>
+
+</ul>
+
+
+{% if user == meal.user %}
+<a href="{% url 'meal_update' meal.id %}">Edit</a>
+<a href="{% url 'meal_delete' meal.id %}">Delete</a>
+{% endif %}

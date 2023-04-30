@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+
+    <title>Edit Post</title>
+</head>
+
+<body>
+
+    <nav class="navbar bg-light navbar-expand-sm">
+
+        <a href="{% url 'home' %}" class="navbar-brand">Health Code</a>
+    
+        <ul class="navbar-nav">
+          {% if user.is_authenticated %}
+    
+    
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
+            </li>
+    
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'calorieTracker:meal' %}">Meal Log</a>
+            </li>
+  
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'calorieTracker:exercise_list' %}">View Exercise Log</a>
+            </li>
+            {% else %}
+                <p class="login mt-2">You are currently not logged in</p>
+                <a href="{% url 'login' %}" class="login mt-2 ml-1"> Login</a>
+                <a href="{% url 'calorieTracker:signup' %}" class="login mt-2 ml-1">| or sign up now</a>
+                {% endif %}
+
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'calorieTracker:muscle_search' %}">Exercise Search</a>
+          </li>
+        </ul>
+      </nav>
+
+      
+      {% block content %}
+      <div class="container">
+        <div class="row">
+          <div class="col-8 offset-2">
+            <h2 class=" my-5">Update post</h2>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="form-group">
+                {{ form.topic.label_tag }}
+                <input type="text" class="form-control {% if form.topic.errors %}is-invalid{% endif %}" id="id_topic"
+                  name="topic" value='{{ form.topic.value|default:"" }}'>
+                {% if form.topic.errors %}
+                <div class="invalid-feedback">{{ form.topic.errors }}</div>
+                {% endif %}
+              </div>
+      
+              <div class="form-group">
+                {{ form.title.label_tag }}
+                <input type="text" class="form-control {% if form.title.errors %}is-invalid{% endif %}" id="id_title"
+                  name="title" value='{{ form.title.value|default:"" }}'>
+                {% if form.title.errors %}
+                <div class="invalid-feedback">{{ form.title.errors }}</div>
+                {% endif %}
+              </div>
+      
+              <div class="form-group">
+                {{ form.description.label_tag }}
+                <textarea type="text" class="form-control {% if form.description.errors %}is-invalid{% endif %}" id="id_description"
+                  name="description" cols="40" rows="10">{{ form.description.value|default:"" }}</textarea>
+                {% if form.description.errors %}
+                <div class="invalid-feedback">{{ form.description.errors }}</div>
+                {% endif %}
+              </div>
+
+      
+              <button type="submit" class="btn btn-primary">
+                Update the post
+              </button>
+            </form>
+      
+          </div>
+        </div>
+      </div>
+      {% endblock content %}
+    
+    <div class="container-fluid">
+        <footer class="rounded bg-light">
+          <p class="text-center text-secondary py-2">&copy; Health Code 2023.</p>
+        </footer>
+
+
+
+</body>
+
+</html>
